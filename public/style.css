@@ -1,0 +1,16 @@
+.button-box {
+  position: fixed;
+  float: left;
+  margin-left: 47%;
+  margin-top: 45%;
+}
+
+.button {
+  padding: 5px;
+}
+
+#compound {
+  position: fixed;
+  float: left;
+  padding: 20px;
+}
