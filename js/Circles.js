@@ -59,12 +59,9 @@ function doesIntersect(c1, c2) {
 };
 
 function updateCompoundShapes(c) {
-  intersectingCircles = [];
-  for(var i = 0; i < circles.length; i++) {
-    if(doesIntersect(c, circles[i])) {
-      intersectingCircles.push(circles[i]);
-    };
-  };
+  intersectingCircles = circles.filter(function(circle) {
+    return doesIntersect(c, circle);
+  });
   var n = intersectingCircles.length;
   if(n === 0) {
     return compoundShapes ++;
@@ -83,5 +80,4 @@ function updateCompoundShapes(c) {
     toDecrease = 0;
   };
   compoundShapes -= toDecrease;
-  console.log(compoundShapes);
 };
