@@ -33,4 +33,15 @@ two circles is 1. For scenarios where adding a circle either doesn't affect the
 number of compound shapes or increases the number of compound shapes, the logic
 is relatively simple. However, for scenarios where adding a circle causes the
 number the compound shapes to decrease, the logic has proven to be quite
-complex.
+complex. For example, consider the following scenario
+
+![shot_1](public/images/circles_1.png)
+
+Here the three circles don't overlap and so the total number of compound shapes is
+3. However, adding a circle in the middle which intersects all three circles will
+cause the total number of compound shapes to decrease to 1 as shown below.
+
+![shot_1](public/images/circles_2.png)
+
+The logic to handle a scenario where an added circle intersects n circles is where
+the complexity lies.
