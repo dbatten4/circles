@@ -5,8 +5,8 @@ circles by clicking the mouse. There are also buttons to pan the screen left and
 right.
 
 The app is written in plain Javascript. I've decided not to use jQuery as I felt
-it was a bit unnecessary as there are only a couple of events on the page which
-need handling and these can be done quite easily with plan Javascript.
+it was a bit unnecessary since there are only a couple of events on the page which
+need handling and these can be done quite easily with plain Javascript.
 
 # Installation and Usage
 
