@@ -67,7 +67,7 @@ function updateCompoundShapes(c) {
     return compoundShapes ++;
   };
   var numberOfIntersections = 0;
-  for(var i = n - 1; i >= 0; i--) {
+  for(var i = 0; i < n; i++) {
     for(var j = 0; j < n; j++) {
       if(doesIntersect(intersectingCircles[i], intersectingCircles[j])) {
         numberOfIntersections ++;
