@@ -21,6 +21,13 @@ function addCircle(e) {
   draw(circle);
   circles.push(circle);
   updateCompoundShapes(circle);
+  var compoundShapesArray = [];
+  circles.forEach(function(circle) {
+    if(circle.circlesArray != undefined) {
+      compoundShapesArray.push(circle.circlesArray);
+    };
+  });
+  compoundShapes = compoundShapesArray.length;
   document.getElementById("compound").innerHTML = compoundShapes;
 };
 
@@ -41,6 +48,7 @@ function draw(c) {
 function Circle(x, y) {
   this.x = x;
   this.y = y;
+  this.circlesArray = [];
 };
 
 function distanceBetweenTwoCentres(x1, y1, x2, y2) {
@@ -63,21 +71,41 @@ function updateCompoundShapes(c) {
     return doesIntersect(c, circle);
   });
   var n = intersectingCircles.length;
-  if(n === 0) {
-    return compoundShapes ++;
-  };
-  var numberOfIntersections = 0;
-  for(var i = 0; i < n; i++) {
-    for(var j = 0; j < n; j++) {
-      if(doesIntersect(intersectingCircles[i], intersectingCircles[j])) {
-        numberOfIntersections ++;
-      };
+  intersectingCircles.forEach(function(circle) {
+    if(circle.circlesArray != undefined) {
+      circle.circlesArray.forEach(function(circ) {
+        c.circlesArray.push(circ);
+      });
     };
-  };
-  numberOfIntersections = numberOfIntersections / 2;
-  var toDecrease = n - numberOfIntersections - 1;
-  if(toDecrease < 0) {
-    toDecrease = 0;
-  };
-  compoundShapes -= toDecrease;
+    delete circle.circlesArray;
+  });
+  console.log(circles);
 };
+
+
+//function updateCompoundShapes(c) {
+  //intersectingCircles = circles.filter(function(circle) {
+    //return doesIntersect(c, circle);
+  //});
+  //var n = intersectingCircles.length;
+  //if(n === 0) {
+    //return compoundShapes ++;
+  //};
+  //var numberOfIntersections = 0;
+  //for(var i = 0; i < n; i++) {
+    //for(var j = 0; j < n; j++) {
+      //if(doesIntersect(intersectingCircles[i], intersectingCircles[j])) {
+        //numberOfIntersections ++;
+      //};
+    //};
+  //};
+  //console.log(numberOfIntersections);
+  //numberOfIntersections = numberOfIntersections / 2;
+  //console.log(n);
+  //console.log(numberOfIntersections);
+  //var toDecrease = n - numberOfIntersections - 1;
+  //if(toDecrease < 0) {
+    //toDecrease = 0;
+  //};
+  //compoundShapes -= toDecrease;
+//};
