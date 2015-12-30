@@ -23,8 +23,8 @@ function addCircle(e) {
   updateCompoundShapes(circle);
   var compoundShapesArray = [];
   circles.forEach(function(circle) {
-    if(circle.circlesArray != undefined) {
-      compoundShapesArray.push(circle.circlesArray);
+    if(circle.circlesIdArray != undefined) {
+      compoundShapesArray.push(circle.circlesIdArray);
     };
   });
   compoundShapes = compoundShapesArray.length;
@@ -43,12 +43,14 @@ function draw(c) {
   context.beginPath();
   context.arc(c.x, c.y, RADIUS, 0, 2*Math.PI);
   context.stroke();
+  c.circlesIdArray.push(c.id);
 };
 
 function Circle(x, y) {
   this.x = x;
   this.y = y;
-  this.circlesArray = [];
+  this.id = circles.length;
+  this.circlesIdArray = [];
 };
 
 function distanceBetweenTwoCentres(x1, y1, x2, y2) {
@@ -70,42 +72,64 @@ function updateCompoundShapes(c) {
   intersectingCircles = circles.filter(function(circle) {
     return doesIntersect(c, circle);
   });
-  var n = intersectingCircles.length;
   intersectingCircles.forEach(function(circle) {
-    if(circle.circlesArray != undefined) {
-      circle.circlesArray.forEach(function(circ) {
-        c.circlesArray.push(circ);
-      });
-    };
-    delete circle.circlesArray;
+    var found = circles.filter(function(circ) {
+      if(circ.circlesIdArray != undefined) {
+        return circ.circlesIdArray.indexOf(circle.id) > -1;
+      };
+    })[0];
+    found.circlesIdArray.forEach(function(id) {
+      c.circlesIdArray.push(id);
+    });
+    delete found.circlesIdArray;
   });
-  console.log(circles);
 };
 
+//for each circle in the intersecting circles array
+//find which circles array it belongs to 
+//pull all the circles in that array into the added circle's array
+//delete the circles array containing the circle in the intersecting circles array
 
-//function updateCompoundShapes(c) {
-  //intersectingCircles = circles.filter(function(circle) {
-    //return doesIntersect(c, circle);
-  //});
-  //var n = intersectingCircles.length;
-  //if(n === 0) {
-    //return compoundShapes ++;
+
+//var found;
+//circles.some(function(circ) {
+  //if (circ.circlesIdArray != undefined && circ.circlesIdArray.indexOf(circle.id) > -1) {
+    //found = circ;
+    //return true;
+  //}
+//});
+
+//intersectingCircles.forEach(function(circle) {
+  //if(circle.circlesArray != undefined) {
+    //circle.circlesArray.forEach(function(circ) {
+      //c.circlesArray.push(circ);
+    //});
   //};
-  //var numberOfIntersections = 0;
-  //for(var i = 0; i < n; i++) {
-    //for(var j = 0; j < n; j++) {
-      //if(doesIntersect(intersectingCircles[i], intersectingCircles[j])) {
-        //numberOfIntersections ++;
-      //};
-    //};
-  //};
-  //console.log(numberOfIntersections);
-  //numberOfIntersections = numberOfIntersections / 2;
-  //console.log(n);
-  //console.log(numberOfIntersections);
-  //var toDecrease = n - numberOfIntersections - 1;
-  //if(toDecrease < 0) {
-    //toDecrease = 0;
-  //};
-  //compoundShapes -= toDecrease;
-//};
+  //delete circle.circlesArray;
+//});
+
+/*
+ *function updateCompoundShapes(c) {
+ *  intersectingCircles = circles.filter(function(circle) {
+ *    return doesIntersect(c, circle);
+ *  });
+ *  var n = intersectingCircles.length;
+ *  if(n === 0) {
+ *    return compoundShapes ++;
+ *  };
+ *  var numberOfIntersections = 0;
+ *  for(var i = 0; i < n; i++) {
+ *    for(var j = 0; j < n; j++) {
+ *      if(doesIntersect(intersectingCircles[i], intersectingCircles[j])) {
+ *        numberOfIntersections ++;
+ *      };
+ *    };
+ *  };
+ *  numberOfIntersections = numberOfIntersections / 2;
+ *  var toDecrease = n - numberOfIntersections - 1;
+ *  if(toDecrease < 0) {
+ *    toDecrease = 0;
+ *  };
+ *  compoundShapes -= toDecrease;
+ *};
+ */
