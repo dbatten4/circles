@@ -21,6 +21,7 @@ function addCircle(e) {
   draw(circle);
   circles.push(circle);
   updateCompoundShapes(circle);
+  compoundShapes = countCompoundShapes();
   document.getElementById("compound").innerHTML = compoundShapes;
 };
 
@@ -36,11 +37,14 @@ function draw(c) {
   context.beginPath();
   context.arc(c.x, c.y, RADIUS, 0, 2*Math.PI);
   context.stroke();
+  c.circlesIdArray.push(c.id);
 };
 
 function Circle(x, y) {
   this.x = x;
   this.y = y;
+  this.id = circles.length;
+  this.circlesIdArray = [];
 };
 
 function distanceBetweenTwoCentres(x1, y1, x2, y2) {
@@ -62,22 +66,25 @@ function updateCompoundShapes(c) {
   intersectingCircles = circles.filter(function(circle) {
     return doesIntersect(c, circle);
   });
-  var n = intersectingCircles.length;
-  if(n === 0) {
-    return compoundShapes ++;
-  };
-  var numberOfIntersections = 0;
-  for(var i = 0; i < n; i++) {
-    for(var j = 0; j < n; j++) {
-      if(doesIntersect(intersectingCircles[i], intersectingCircles[j])) {
-        numberOfIntersections ++;
+  intersectingCircles.forEach(function(circle) {
+    var found = circles.filter(function(circ) {
+      if(circ.circlesIdArray != undefined) {
+        return circ.circlesIdArray.indexOf(circle.id) > -1;
       };
+    })[0];
+    found.circlesIdArray.forEach(function(id) {
+      c.circlesIdArray.push(id);
+    });
+    delete found.circlesIdArray;
+  });
+};
+
+function countCompoundShapes() {
+  var compoundShapesArray = [];
+  circles.forEach(function(circle) {
+    if(circle.circlesIdArray != undefined) {
+      compoundShapesArray.push(circle.circlesIdArray);
     };
-  };
-  numberOfIntersections = numberOfIntersections / 2;
-  var toDecrease = n - numberOfIntersections - 1;
-  if(toDecrease < 0) {
-    toDecrease = 0;
-  };
-  compoundShapes -= toDecrease;
+  });
+  return compoundShapesArray.length;
 };
